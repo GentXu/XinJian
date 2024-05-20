@@ -31,7 +31,7 @@ class MyAuth:
         return sign
 
     """用户注册"""
-    def register(self, account, passwd, name, remark):
+    def register(self, account, passwd, name, motto):
         reg_url = "http://47.103.131.3:7943/myauth/soft/register"
         data = {
             "device_info": self.device_info,
@@ -39,7 +39,7 @@ class MyAuth:
             "user": account,
             "pass": passwd,
             "name": name,
-            "remark": remark,
+            "qq": motto,
             "timestamp": str(time.time())[:10]
         }
         payload = json.dumps({
@@ -70,15 +70,6 @@ class MyAuth:
         response = requests.request("POST", login_url, headers=self.headers, data=payload)
         return response.json()
 
-    def admin_login(self):
-        url = "http://47.103.131.3:7943/myauth/web/login"
-        payload = json.dumps({
-            "user": "admin",
-            "pass": "1314520Aa@@"
-        })
-        response = requests.request("POST", url, headers=self.headers, data=payload)
-        return response.json()
-
     """查询用户基本信息"""
     def get_user_info(self, user):
         url = "http://47.103.131.3:7943/myauth/web/queryUserInfo?user=" + user + "&skey=" + self.skey
@@ -86,22 +77,23 @@ class MyAuth:
         response = requests.request("GET", url, headers=self.headers, data=payload)
         return response.json()
 
-    def get_user_info_with_token(self, token):
-        url = "http://47.103.131.3:7943/myauth/web/getUser"
-        payload = json.dumps({})
-        headers = {
-            'token': token,
-            'User-Agent': 'Apifox/1.0.0 (https://apifox.com)',
-            'Content-Type': 'application/json'
+    """修改用户基本信息"""
+    def change_user_info(self, new_name, new_motto,  token):
+        url = "http://47.103.131.3:7943/myauth/soft/editInfo"
+        data = {
+            "device_info": self.device_info,
+            "device_code": self.device_code,
+            "newName": new_name,
+            "newQq": new_motto,
+            "token": token,
+            "timestamp": str(time.time())[:10]
         }
-        response = requests.request("POST", url, headers=headers, data=payload)
-        print(response.json())
-
-    def check_token(self, token):
-        url = "http://47.103.131.3:7943/myauth/web/checkLogin"
-
-        payload = json.dumps({})
-        self.headers["token"] = token
+        payload = json.dumps({
+            "data": data,
+            "skey": self.skey,
+            "vkey": self.vkey,
+            "sign": self.get_sign(data)
+        })
         response = requests.request("POST", url, headers=self.headers, data=payload)
         return response.json()
 
@@ -122,7 +114,7 @@ class MyAuth:
         })
 
         response = requests.request("POST", url, headers=self.headers, data=payload)
-        return response.json()
+        print(response.json()["msg"])
 
     """获得用户机器码"""
     @staticmethod

@@ -1,10 +1,9 @@
-import tkinter
-from tkinter import *
+import threading
 from tkinter import messagebox
 import SocketService
-
 import MyAuth
 from entity.User import *
+from gui.UserGui import *
 
 
 myAuth = MyAuth.MyAuth()
@@ -15,11 +14,7 @@ class MainGui(Frame):
     def __init__(self, master=None):
         super().__init__(master)
         user_result = myAuth.get_user_info("ndx123")
-        print(token)
-        myAuth.get_user_info_with_token(token)
-        admin = myAuth.admin_login()
-        print(admin)
-        self.user = User(user_result["result"]["name"], user_result["result"]["remark"], udp_cli.get_ip())
+        self.user = User(user_result["result"]["name"], user_result["result"]["remark"], udp_cli.get_ip(), token)
         self.master = master
         self.master.resizable(0, 0)
         self.pack()
@@ -126,8 +121,7 @@ class Application(Frame):
             销毁登录界面，新建一个父窗口为用户界面
             """
             token = result["result"]["token"]
-            heart = myAuth.heartbeat(token)
-            print(heart["msg"])
+            threading.Timer(200, myAuth.heartbeat, args=(token,))
             self.master.destroy()
             main_gui = Tk()
             main_gui.title("XinJian")
