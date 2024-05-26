@@ -6,7 +6,8 @@ class DataBase:
         self.tcp_service = tcp_service
 
     def register(self, **kwargs):
-        kwargs["interface"] = "soft/register"
+        kwargs["interface"] = "soft"
+        kwargs["method"] = "register"
         data = json.dumps(kwargs)
         try:
             self.tcp_service.send_msg(data)
@@ -15,7 +16,8 @@ class DataBase:
             print(ex)
 
     def login(self, **kwargs):
-        kwargs["interface"] = "soft/login"
+        kwargs["interface"] = "soft"
+        kwargs["method"] = "login"
         data = json.dumps(kwargs)
         try:
             self.tcp_service.send_msg(data)
@@ -24,7 +26,8 @@ class DataBase:
             print(ex)
 
     def get_user_info(self, **kwargs):
-        kwargs["interface"] = "soft/get_user_info"
+        kwargs["interface"] = "soft"
+        kwargs["method"] = "get_user_info"
         data = json.dumps(kwargs)
         try:
             self.tcp_service.send_msg(data)
