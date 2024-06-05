@@ -5,8 +5,8 @@ import threading
 
 class UDPSocketLoad:
     def __init__(self):
-        self.host = '222.187.254.111'
-        self.port = 15061
+        self.host = '10.134.86.51'
+        self.port = 25555
         self.udp_cli = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.ip = None
         self.initialize()
@@ -46,10 +46,14 @@ class UDPSocketLoad:
 
 class TCPSocketLoad:
     def __init__(self):
-        self.host = '222.187.254.111'
-        self.port = 15061
-        self.tcp_cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.tcp_cli.connect((self.host, self.port))
+        try:
+            self.host = '10.134.86.51'
+            self.port = 25555
+            self.tcp_cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.tcp_cli.connect((self.host, self.port))
+        except ConnectionRefusedError as ex:
+            print(ex)
+            exit()
 
     """
     服务端消息处理
