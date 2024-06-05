@@ -1,8 +1,7 @@
-import json
 from tkinter import messagebox
-from tkinter import ttk
 import SocketService
 from entity.User import *
+from gui.MainGui import *
 from gui.UserGui import *
 from data.DataBase import *
 from PIL import ImageTk, Image
@@ -10,35 +9,6 @@ from utils.AESUtil import *
 
 token = None
 user_data = None
-
-
-class MainGui(Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.master.resizable(0, 0)
-        # self.menu_bar = tkinter.Menu(self.master)
-        # self.menu_file = tkinter.Menu(self.menu_bar, tearoff=0)
-        # self.menu_bar.add_cascade(label="个人", menu=self.menu_file)
-        # self.menu_file.add_command(label="信息", command=self.user_gui)
-        user_img = Image.open("img/icon/user.png").resize((20, 20))
-        self.style = ttk.Style()
-        self.style.configure(
-            "Sunken.TButton", relief="sunken"
-        )
-        self.tk_user_icon = ImageTk.PhotoImage(user_img)
-        self.user_frame = ttk.Frame(self, relief="groove", width=90, height=100)
-        self.user_button = ttk.Button(self, text="1", style="Sunken.TButton")
-        self.create_widgets()
-
-    def create_widgets(self):
-        self.grid(column=0, row=0)
-        self.user_button.grid(column=0, row=0, columnspan=4)
-        self.user_frame.grid(column=0, row=1, columnspan=4, rowspan=3)
-        #self.master.config(menu=self.menu_bar)
-
-    def user_gui(self):
-        UserGui(user_data, self.master)
 
 
 class Register:
@@ -187,7 +157,7 @@ class Login(Frame):
             self.master.destroy()
             main_gui = Tk()
             main_gui.title("")
-            main_gui.geometry("90x210+1400+150")
+            main_gui.geometry("90x230+1400+150")
             main_gui.attributes("-toolwindow", 2)
             MainGui(main_gui)
             main_gui.mainloop()
