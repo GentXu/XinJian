@@ -1,20 +1,25 @@
 from tkinter import ttk
-from gui.UserGui import *
+from gui.SearchUserGui import *
 from PIL import ImageTk, Image
 
 
 class MainGui(Frame):
-    def __init__(self, master=None):
+    def __init__(self, master, database):
         super().__init__(master)
         self.master = master
+        self.database = database
         self.master.resizable(0, 0)
         # self.menu_bar = tkinter.Menu(self.master)
         # self.menu_file = tkinter.Menu(self.menu_bar, tearoff=0)
         # self.menu_bar.add_cascade(label="个人", menu=self.menu_file)
         # self.menu_file.add_command(label="信息", command=self.user_gui)
         user_img = Image.open("img/icon/user.png").resize((17, 17))
+        search_img = Image.open("img/icon/search.png").resize((17, 17))
+        self.tk_search_icon = ImageTk.PhotoImage(search_img)
         self.tk_user_icon = ImageTk.PhotoImage(user_img)
         self.user_button = ttk.Button(self, image=self.tk_user_icon, command=self.toggle_user_frame)
+        self.search_button = ttk.Button(self, image=self.tk_search_icon, text="查 找", compound="left", width=5,
+                                        command=self.search_user)
         self.create_widgets()
         self.user_frame = self.UserFrame(self)
         self.user_frame.create_widgets()
@@ -25,6 +30,7 @@ class MainGui(Frame):
     def create_widgets(self):
         self.grid(column=0, row=0)
         self.user_button.grid(column=0, row=0, columnspan=4, sticky=W)
+        self.search_button.grid(column=0, row=7, columnspan=4, sticky=E)
         # self.master.config(menu=self.menu_bar)
 
     def toggle_user_frame(self):
@@ -39,6 +45,9 @@ class MainGui(Frame):
         else:   # 主框架为显示状态
             self.user_frame.grid_remove()   # 隐藏主框架
         self.user_frame.hidden = not self.user_frame.hidden
+
+    def search_user(self):
+        SearchUserGui(self.master, self.database)
 
     """
     用户框架主类

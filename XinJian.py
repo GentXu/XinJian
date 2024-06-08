@@ -1,6 +1,4 @@
-from tkinter import messagebox
 import SocketService
-from entity.User import *
 from gui.MainGui import *
 from gui.UserGui import *
 from data.DataBase import *
@@ -159,7 +157,7 @@ class Login(Frame):
             main_gui.title("")
             main_gui.geometry("90x230+1400+150")
             main_gui.attributes("-toolwindow", 2)
-            MainGui(main_gui)
+            MainGui(main_gui, data_base)
             main_gui.mainloop()
         else:
             messagebox.showerror("提示", "密码错误！请重新输入")
